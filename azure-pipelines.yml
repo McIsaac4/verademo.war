@@ -24,4 +24,8 @@ steps:
     veracodeAppProfile: 'pl_demo'
     version: '$(build.buildNumber)'
     filepath: '$(build.artifactstagingdirectory)'
+    importResults: true
+    failBuildOnPolicyFail: true
     maximumWaitTime: '60'
+
+
