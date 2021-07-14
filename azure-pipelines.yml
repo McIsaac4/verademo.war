@@ -4,7 +4,11 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+ branches:
+  include:
+  - refs/heads/master
+  - refs/heads/dev
+  - refs/heads/featureX
 
 pool:
   vmImage: ubuntu-latest
@@ -18,12 +22,14 @@ steps:
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
 - task: Veracode@3
+  displayName: SAST - Policy Scan
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   inputs:
     ConnectionDetailsSelection: 'Endpoint'
     AnalysisService: 'Veracode'
     veracodeAppProfile: 'pl_demo'
     version: '$(build.buildNumber)'
-    filepath: '$(build.artifactstagingdirectory)'
+    filepath: '$verademo.war'
     importResults: true
     failBuildOnPolicyFail: true
     maximumWaitTime: '60'
